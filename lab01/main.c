@@ -1,59 +1,80 @@
 /*
-Calculeaza o valoare aproximativa a radacinii patrate a unui numar real pozitiv, cu o precizie data.
+Calculeaza o valoare aproximativa a radacinii patrate a unui numar real pozitiv,
+cu o precizie data.
 */
 #include <stdio.h>
 
 typedef struct {
-    double precision;
+  double precision;
 } Configuration;
-
 
 /**
  * Calculeaza o valoare aproximativa a sqrt(number),
  * cu o precizie data.
- * 
+ *
  * @param number numar real, numarul pentru care se calculeaza radicalul
  * @param precision precizia dorita
- * @return o valoare reala aproximativa a radical din number, sau -1 daca `number` este negativ
+ * @return o valoare reala aproximativa a radical din number, sau -1 daca
+ * `number` este negativ
  */
-double radical(double number, double precision){
-    if (number < 0) {
-        return -1; // semnalizam o eroare pentru numere negative
-    }
-    else if (number == 0) { // caz special pentru 0
-        return 0; // sqrt(0) este 0
-    }
+double radical(double number, double precision) {
+  if (number < 0) {
+    return -1; // semnalizam o eroare pentru numere negative
 
-    double guess = number / 2.0; // o ghicire initiala, jumatatea numarului
-    double delta; // diferenta dintre guess^2 si number
+  } else if (number == 0) { // caz special pentru 0
+    return 0;               // sqrt(0) este 0
+  }
 
-    // diferenta dintre guess si valoarea reala a radacinii patrate
-    // trebuie sa apartina de intervalul [-precizie, precizie]
-    do {
+  double guess = number / 2.0; // o ghicire initiala, jumatatea numarului
+  double delta;                // diferenta dintre guess^2 si number
 
-        // guess_nou = media aritmetica dintre guess si number/guess
-        guess = (guess + number / guess) / 2.0; // formula lui Heron pentru imbunatatirea ghicirii
+  // diferenta dintre guess si valoarea reala a radacinii patrate
+  // trebuie sa apartina de intervalul [-precizie, precizie]
+  do {
 
-        // calculam cat de departe este guess de sqrt(number)
-        delta = guess * guess - number;
+    // guess_nou = media aritmetica dintre guess si number/guess
+    guess = (guess + number / guess) /
+            2.0; // formula lui Heron pentru imbunatatirea ghicirii
 
-    } while (delta > precision || delta < -precision);
+    // calculam cat de departe este guess de sqrt(number)
+    delta = guess * guess - number;
 
-    return guess; // returnam aproximarea pentru sqrt(number)
+  } while (delta > precision || delta < -precision);
+
+  return guess; // returnam aproximarea pentru sqrt(number)
 }
 
+/**
+ * Gaseste exponentul la care numarul prim p apare in descompunerea
+ * in factori primi a numarului N = 1*2*...*n (n natural nenul dat).
+ */
+int find_exponent(int p, int n) {
+  int exponent = 0;
+  double p_power = 1; // p^exponent
+
+  // Impartim la p cat timp p^exponent <= n
+  while (p_power <= n) {
+    exponent++;   // crestem exponentul
+    p_power *= p; // actualizam p^exponent pentru urmatoarea iteratie
+  }
+
+  return exponent - 1; // returnam exponentul maxim pentru care p^exponent <= n
+}
 
 /**
  * Printarea meniului de optiuni pentru utilizator.
- * @param config Configuration structura de configurare care poate contine setari pentru meniu (de exemplu, precizia curenta)
+ * @param config Configuration structura de configurare care poate contine
+ * setari pentru meniu (de exemplu, precizia curenta)
  */
 void print_menu(Configuration config) {
-    printf("\n=== Meniu ===\n");
-    printf("Precizia curenta: %f\n\n", config.precision);
-    printf("1. Calculeaza radicalul unui numar\n");
-    printf("2. Seteaza precizia\n");
-    printf("0. Iesire\n");
-    printf("Alege o optiune: ");
+  printf("\n=== Meniu ===\n");
+  printf("Precizia curenta: %f\n\n", config.precision);
+  printf("1. Calculeaza radicalul unui numar\n");
+  printf("2. Seteaza precizia\n");
+  printf("3. Gaseste exponentul la care numarul prim p apare in descompunerea "
+         "in factori primi a numarului N = 1*2*...*n\n");
+  printf("0. Iesire\n");
+  printf("Alege o optiune: ");
 }
 
 /**
@@ -61,11 +82,10 @@ void print_menu(Configuration config) {
  * @return optiunea aleasa de utilizator (un numar intreg)
  */
 int get_user_choice() {
-    int choice;
-    scanf("%d", &choice);
-    return choice;
+  int choice;
+  scanf("%d", &choice);
+  return choice;
 }
-
 
 /**
  * Setter pt. precizie
@@ -73,57 +93,71 @@ int get_user_choice() {
  * @param new_precision noua valoare a preciziei care trebuie setata
  */
 void set_precision(Configuration *config, double new_precision) {
-    config->precision = new_precision;
+  config->precision = new_precision;
 }
-
-
 
 int main() {
 
-    Configuration config;
-    config.precision = 0.00001; // setam o precizie default
+  Configuration config;
+  config.precision = 0.00001; // setam o precizie default
 
+  while (1) {
+    print_menu(config);
+    int choice = get_user_choice();
 
-    while (1)
-    {
-        print_menu(config);
-        int choice = get_user_choice();
-
-        switch (choice) {
-            case 1: {
-                printf("Introduceti un numar real pozitiv: ");
-                double number;
-                scanf("%lf", &number);
-                double result = radical(number, config.precision);
-                if (result == -1) {
-                    printf("Eroare: numarul trebuie sa fie pozitiv!\n");
-                } else {
-                    printf("sqrt(%f) = %.5f\n", number, result);
-                }
-                break;
-            }
-            case 2: {
-                printf("Introduceti noua precizie (ex: 0.00001): ");
-                double new_precision;
-                scanf("%lf", &new_precision);
-                if (new_precision <= 0) {
-                    printf("Eroare: precizia trebuie sa fie un numar pozitiv!\n");
-                } else {
-                    set_precision(&config, new_precision);
-                    printf("Precizia a fost actualizata la %f\n", config.precision);
-                }
-                break;
-            }
-            case 0: {
-                printf("La revedere!\n");
-                return 0; // iesim din program
-            }
-            default: {
-                printf("Optiune invalida!\n");
-                break;
-            }
-        }
+    switch (choice) {
+    case 1: {
+      printf("Introduceti un numar real pozitiv: ");
+      double number;
+      scanf("%lf", &number);
+      double result = radical(number, config.precision);
+      if (result == -1) {
+        printf("Eroare: numarul trebuie sa fie pozitiv!\n");
+      } else {
+        printf("sqrt(%f) = %.5f\n", number, result);
+      }
+      break;
     }
+    case 2: {
+      printf("Introduceti noua precizie (ex: 0.00001): ");
+      double new_precision;
+      scanf("%lf", &new_precision);
+      if (new_precision <= 0) {
+        printf("Eroare: precizia trebuie sa fie un numar pozitiv!\n");
+      } else {
+        set_precision(&config, new_precision);
+        printf("Precizia a fost actualizata la %f\n", config.precision);
+      }
+      break;
+    }
+    case 3: {
+      printf("Introduceti un numar prim p: ");
+      int p;
+      scanf("%d", &p);
+      printf("Introduceti un numar natural nenul n: ");
+      int n;
+      scanf("%d", &n);
+      if (p <= 1 || n <= 0) {
+        printf("Eroare: p trebuie sa fie un numar prim si n trebuie sa fie un "
+               "numar natural nenul!\n");
+      } else {
+        int exponent = find_exponent(p, n);
+        printf("Exponentul la care numarul prim %d apare in descompunerea in "
+               "factori primi a numarului %d = 1*2*...*%d este %d\n",
+               p, n, n, exponent);
+      }
+      break;
+    }
+    case 0: {
+      printf("La revedere!\n");
+      return 0; // iesim din program
+    }
+    default: {
+      printf("Optiune invalida!\n");
+      break;
+    }
+    }
+  }
 
-    return 0;
+  return 0;
 }
