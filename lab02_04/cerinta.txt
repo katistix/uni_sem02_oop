@@ -1,0 +1,23 @@
+Creati o aplicatie modulara in C.
+Se cere interfata utilizator de tip consola.
+Datele introduse de utilizator trebuie validate. 
+Folositi athitectura stratificata.
+Folositi dezvoltare dirijata de teste (Test Driven Development)
+Fiecare metoda din aplicatie trebuie specificat si testat.
+Implementati vector dinamic pentru lucru cu liste:
+    - in prima saptamana puteti folosi reprezentarea cu un struct ( un vector static si lungime in el)
+    - pana in saptamana 2 trebuie folosit alocare dinamica (sa acomodeze oricate elemente)
+Timp de lucru 2 saptamani.
+
+
+
+
+4. Inchiriere masini
+Creati o aplicatie pentru o firma de inchirieri auto. Fiecare masina are un numar de inmatriculare, 
+model si categorie (mini, sport, suv, etc). 
+Aplicatia permite:
+a) adaugare de masini
+b) actualizare masina existenta
+c) inchiriere masina/returnare masina
+d) Vizualizare masini dupa un criteru dat (categorie, model)
+e) Permite sortarea masinilor dupa: model sau categorie (crescator/descrescator)

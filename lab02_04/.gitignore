@@ -1,0 +1,12 @@
+main
+test
+
+.DS_Store
+
+# Coverage generated files
+*.gcda
+*.gcno
+lcov_raw.info
+lcov.info
+coverage_html/
+test_coverage
