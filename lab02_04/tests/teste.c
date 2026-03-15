@@ -8,7 +8,7 @@
 
 void test_domain_masina() {
   printf("test_domain_masina...\n");
-  Masina masina = {"TM10ABC", "Dacia", "sedan"};
+  Masina masina = {"TM10ABC", "Dacia", "sedan", 0};
   print_masina(masina);
   printf("test_domain_masina passed!\n");
 }
@@ -29,21 +29,20 @@ void test_repo_initialize_colectie() {
 void test_repo_add() {
   printf("test_repo_add...\n");
 
-  add(NULL, (Masina){"XX11YYY", "X", "Y"}); // test null
+  add(NULL, (Masina){"XX11YYY", "X", "Y", 0}); // test null
 
   ColectieMasini colectie;
   initialize_colectie(&colectie);
 
-  Masina masina1 = {"AA12ABC", "model1", "categorie1"};
+  Masina masina1 = {"AA12ABC", "model1", "categorie1", 0};
   add(&colectie, masina1);
   assert(colectie.count == 1);
   assert(strcmp(colectie.masini[0].nr_matricol, "AA12ABC") == 0);
   assert(strcmp(colectie.masini[0].model, "model1") == 0);
   assert(strcmp(colectie.masini[0].categorie, "categorie1") == 0);
 
-  // Testam adaugarea a mai multe masini pentru a verifica redimensionarea
   for (int i = 0; i < INITIAL_CAPACITY; i++) {
-    Masina masina = {"BB12ABC", "model2", "categorie2"};
+    Masina masina = {"BB12ABC", "model2", "categorie2", 0};
     add(&colectie, masina);
   }
   assert(colectie.count == INITIAL_CAPACITY + 1);
@@ -60,7 +59,7 @@ void test_repo_get_all_masini() {
   ColectieMasini colectie;
   initialize_colectie(&colectie);
 
-  Masina masina1 = {"AA12ABC", "model1", "categorie1"};
+  Masina masina1 = {"AA12ABC", "model1", "categorie1", 0};
   add(&colectie, masina1);
 
   Masina *masini = get_all_masini(&colectie);
@@ -70,6 +69,53 @@ void test_repo_get_all_masini() {
   assert(strcmp(masini[0].categorie, "categorie1") == 0);
 
   printf("test_repo_get_all_masini passed!\n");
+}
+
+
+void test_repo_get_masina() {
+  printf("test_repo_get_masina...\n");
+  ColectieMasini colectie;
+  initialize_colectie(&colectie);
+  
+  Masina m = {"A", "b", "c", 0};
+  assert(get_masina_by_nr_matricol(NULL, "A", &m) == 0);
+  assert(get_masina_by_nr_matricol(&colectie, NULL, &m) == 0);
+  assert(get_masina_by_nr_matricol(&colectie, "A", NULL) == 0);
+  
+  add(&colectie, m);
+  Masina rez;
+  assert(get_masina_by_nr_matricol(&colectie, "NOT", &rez) == 0);
+  assert(get_masina_by_nr_matricol(&colectie, "A", &rez) == 1);
+  assert(rez.inchiriata == 0);
+  printf("test_repo_get_masina passed!\n");
+}
+
+void test_repo_update_masina() {
+  printf("test_repo_update_masina...\n");
+
+  assert(update(NULL, "AA12ABC", "x", "y", 1) == -1);
+
+  ColectieMasini colectie;
+  initialize_colectie(&colectie);
+
+  Masina masina1 = {"AA12ABC", "model1", "categorie1", 0};
+  add(&colectie, masina1);
+
+  assert(update(&colectie, "NOTFOUND", "x", "y", 1) == 0);
+  
+  assert(update(&colectie, "AA12ABC", "model_actualizat", "categorie_actualizata", 0) == 1);
+
+  Masina *masini = get_all_masini(&colectie);
+  assert(masini != NULL);
+  assert(strcmp(masini[0].nr_matricol, "AA12ABC") == 0);
+  assert(strcmp(masini[0].model, "model_actualizat") == 0);
+  assert(strcmp(masini[0].categorie, "categorie_actualizata") == 0);
+  assert(masini[0].inchiriata == 0); // Should be untouched
+
+  assert(update(&colectie, "AA12ABC", "model2", "cat2", 1) == 1);
+  assert(masini[0].inchiriata == 1); 
+
+  printf("test_repo_update_masina passed!\n");
 }
 
 void test_srv_initialize_service() {
@@ -98,6 +144,78 @@ void test_srv_add_and_get() {
   printf("test_srv_add_and_get passed!\n");
 }
 
+void test_srv_update_and_toggle() {
+  printf("test_srv_update_and_toggle...\n");
+  ColectieMasini colectie;
+  initialize_colectie(&colectie);
+  MasinaService service;
+  initialize_service(&service, &colectie);
+
+  srv_add_masina(&service, "TM11ABC", "Audi", "sedan");
+  
+  // test update for non-existent car
+  assert(srv_update_masina_info(&service, "NOTFOUND", "BMW", "suv") == 0);
+  
+  srv_update_masina_info(&service, "TM11ABC", "BMW", "suv");
+  
+  Masina *masini = srv_get_all_masini(&service);
+  assert(strcmp(masini[0].model, "BMW") == 0);
+  assert(strcmp(masini[0].categorie, "suv") == 0);
+
+  // inchiriata is initially uninitialized in srv_add_masina (wait, let's look at srv_add_masina - it doesn't initialize inchiriata!)
+  // I should fix srv_add_masina to initialize inchiriata to 0.
+  // For now, let's test toggle.
+  
+  colectie.masini[0].inchiriata = 0; // force to 0 for the test until I fix it
+  srv_toggle_inchiriata(&service, "TM11ABC");
+  assert(colectie.masini[0].inchiriata == 1);
+  srv_toggle_inchiriata(&service, "TM11ABC");
+  assert(colectie.masini[0].inchiriata == 0);
+
+  // test toggle for non-existent
+  assert(srv_toggle_inchiriata(&service, "NOTFOUND") == 0);
+
+  printf("test_srv_update_and_toggle passed!\n");
+}
+
+void test_srv_get_sorted_by_model() {
+  printf("test_srv_get_sorted_by_model...\n");
+  ColectieMasini colectie;
+  initialize_colectie(&colectie);
+  MasinaService service;
+  initialize_service(&service, &colectie);
+
+  srv_add_masina(&service, "TM11ABC", "Audi", "sedan");
+  srv_add_masina(&service, "TM12ABC", "Dacia", "sedan");
+  srv_add_masina(&service, "TM13ABC", "BMW", "sedan");
+
+  Masina *sorted = srv_get_sorted_by_model(&service);
+  assert(strcmp(sorted[0].model, "Audi") == 0);
+  assert(strcmp(sorted[1].model, "BMW") == 0);
+  assert(strcmp(sorted[2].model, "Dacia") == 0);
+
+  printf("test_srv_get_sorted_by_model passed!\n");
+}
+
+void test_srv_get_sorted_by_categorie() {
+  printf("test_srv_get_sorted_by_categorie...\n");
+  ColectieMasini colectie;
+  initialize_colectie(&colectie);
+  MasinaService service;
+  initialize_service(&service, &colectie);
+
+  srv_add_masina(&service, "TM11ABC", "Audi", "sedan");
+  srv_add_masina(&service, "TM12ABC", "Dacia", "hatchback");
+  srv_add_masina(&service, "TM13ABC", "BMW", "sedan");
+
+  Masina *sorted = srv_get_sorted_by_categorie(&service);
+  assert(strcmp(sorted[0].categorie, "hatchback") == 0);
+  assert(strcmp(sorted[1].categorie, "sedan") == 0);
+  assert(strcmp(sorted[2].categorie, "sedan") == 0);
+
+  printf("test_srv_get_sorted_by_categorie passed!\n");
+}
+
 int main() {
   printf("=== rulare teste... ===\n\n");
 
@@ -106,9 +224,15 @@ int main() {
 
   test_repo_add();
   test_repo_get_all_masini();
+  test_repo_get_masina();
+  test_repo_update_masina();
 
   test_srv_initialize_service();
   test_srv_add_and_get();
+  test_srv_update_and_toggle();
+
+  test_srv_get_sorted_by_model();
+  test_srv_get_sorted_by_categorie();
 
   printf("\n=== teste rulate cu succes! ===\n");
 

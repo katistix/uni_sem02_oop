@@ -2,8 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-/// @brief Initializeaza colectia de masini cu o capacitate initiala si aloca memorie pentru array-ul de masini
-/// @param colectie - pointer la colectia de masini care va fi initializata
+
 void initialize_colectie(ColectieMasini *colectie) {
   if (colectie == NULL)
     return; // ne asiguram ca nu incercam sa accesam un null pointer
@@ -16,9 +15,7 @@ void initialize_colectie(ColectieMasini *colectie) {
   colectie->masini = (Masina *)malloc(colectie->capacity * sizeof(Masina));
 }
 
-/// @brief Adauga o masina in colectia de masini
-/// @param colectie - pointer la colectia de masini in care va fi adaugata masina
-/// @param masina_noua - masina care va fi adaugata
+
 void add(ColectieMasini *colectie, Masina masina_noua) {
   if (colectie == NULL)
     return;
@@ -40,9 +37,39 @@ void add(ColectieMasini *colectie, Masina masina_noua) {
   colectie->count++;
 }
 
-/// @brief Returneaza toate masinile din colectie
-/// @param colectie - pointer la colectia de masini din care se vor returna masinile
-/// @return - pointer la un array de masini care contine toate masinile din colectie
+int get_masina_by_nr_matricol(ColectieMasini *colectie, char *nr_matricol, Masina *rezultat) {
+  if (colectie == NULL || nr_matricol == NULL || rezultat == NULL)
+    return 0;
+
+  for (int i = 0; i < colectie->count; i++) {
+    if (strcmp(colectie->masini[i].nr_matricol, nr_matricol) == 0) {
+      *rezultat = colectie->masini[i];
+      return 1;
+    }
+  }
+  return 0;
+}
+
+int update(ColectieMasini *colectie, char *nr_matricol, char *model_actualizat, char *categorie_actualizata, int inchiriata_actualizat) {
+  // ne asiguram ca nu este nula colectia
+  if (colectie == NULL)
+    return -1; // eroare: colectia este nula
+
+
+  // cautam masina cu nr_matricol in colectie si o actualizam
+  for (int i = 0; i < colectie->count; i++) {
+    if (strcmp(colectie->masini[i].nr_matricol, nr_matricol) == 0) {
+      strcpy(colectie->masini[i].model, model_actualizat);
+      strcpy(colectie->masini[i].categorie, categorie_actualizata);
+      colectie->masini[i].inchiriata = inchiriata_actualizat;
+      return 1; // actualizare reusita
+    }
+  }
+
+  return 0; // masina cu nr_matricol nu a fost gasita
+}
+
+
 Masina *get_all_masini(ColectieMasini *colectie) {
   if (colectie == NULL)
     return NULL;

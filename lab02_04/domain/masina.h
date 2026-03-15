@@ -7,6 +7,8 @@ typedef struct {
                        // "AA12ABC"
   char model[50];      // sir dinamic de caractere pt modelul masinii
   char categorie[50];  // sir dinamic de caractere pt categoria masinii
+
+  int inchiriata; // 0 daca masina este disponibila, 1 daca este inchiriata
 } Masina;
 
 void print_masina(Masina masina);
