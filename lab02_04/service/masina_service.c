@@ -24,6 +24,54 @@ int compare_by_categorie(const void *a, const void *b) {
   return strcmp(masina_a->categorie, masina_b->categorie);
 }
 
+static void merge(Masina *arr, int left, int mid, int right, int (*compare_func)(const void*, const void*)) {
+  int n1 = mid - left + 1;
+  int n2 = right - mid;
+
+  Masina *left_arr = malloc(n1 * sizeof(Masina));
+  Masina *right_arr = malloc(n2 * sizeof(Masina));
+
+  for (int i = 0; i < n1; i++)
+    left_arr[i] = arr[left + i];
+  for (int j = 0; j < n2; j++)
+    right_arr[j] = arr[mid + 1 + j];
+
+  int i = 0, j = 0, k = left;
+  while (i < n1 && j < n2) {
+    if (compare_func(&left_arr[i], &right_arr[j]) <= 0) {
+      arr[k] = left_arr[i];
+      i++;
+    } else {
+      arr[k] = right_arr[j];
+      j++;
+    }
+    k++;
+  }
+
+  while (i < n1) {
+    arr[k] = left_arr[i];
+    i++;
+    k++;
+  }
+
+  while (j < n2) {
+    arr[k] = right_arr[j];
+    j++;
+    k++;
+  }
+
+  free(left_arr);
+  free(right_arr);
+}
+
+static void merge_sort(Masina *arr, int left, int right, int (*compare_func)(const void*, const void*)) {
+  if (left < right) {
+    int mid = left + (right - left) / 2;
+    merge_sort(arr, left, mid, compare_func);
+    merge_sort(arr, mid + 1, right, compare_func);
+    merge(arr, left, mid, right, compare_func);
+  }
+}
 
 
 
@@ -84,36 +132,33 @@ int srv_get_count(MasinaService *srv) {
 }
 
 
-Masina *srv_get_sorted_by_model(MasinaService *srv) {
+Masina *srv_get_sorted_masini(MasinaService *srv, int (*compare_func)(const void*, const void*), int descending) {
   int count = srv_get_count(srv);
 
-  // alocam memorie pentru un array de masini sortat
   Masina *sorted_masini = malloc(count * sizeof(Masina));
 
-  // Copiem masinile din colectie in array-ul ce va fi sortat
   memcpy(sorted_masini, get_all_masini(srv->repo), count * sizeof(Masina));
 
-  // Sortam array-ul de masini dupa model
-  // Folosim mergesort din stdlib
-  mergesort(sorted_masini, count, sizeof(Masina), compare_by_model);
+  if (descending) {
+    qsort(sorted_masini, count, sizeof(Masina), compare_func);
+    for (int i = 0; i < count / 2; i++) {
+      Masina temp = sorted_masini[i];
+      sorted_masini[i] = sorted_masini[count - 1 - i];
+      sorted_masini[count - 1 - i] = temp;
+    }
+  } else {
+    merge_sort(sorted_masini, 0, count - 1, compare_func);
+  }
 
   return sorted_masini;
 }
 
+Masina *srv_get_sorted_by_model(MasinaService *srv) {
+  return srv_get_sorted_masini(srv, compare_by_model, 0);
+}
+
 Masina *srv_get_sorted_by_categorie(MasinaService *srv) {
-  int count = srv_get_count(srv);
-
-  // alocam memorie pentru un array de masini sortat
-  Masina *sorted_masini = malloc(count * sizeof(Masina));
-
-  // Copiem masinile din colectie in array-ul ce va fi sortat
-  memcpy(sorted_masini, get_all_masini(srv->repo), count * sizeof(Masina));
-
-  // Sortam array-ul de masini dupa categorie
-  // Folosim mergesort din stdlib
-  mergesort(sorted_masini, count, sizeof(Masina), compare_by_categorie);
-
-  return sorted_masini;
+  return srv_get_sorted_masini(srv, compare_by_categorie, 0);
 }
 
 

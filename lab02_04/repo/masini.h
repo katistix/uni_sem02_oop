@@ -49,7 +49,6 @@ Masina *get_all_masini(ColectieMasini *colectie);
 
 
 
-// "destructor"
-// momentan nu
+void destroy_colectie(ColectieMasini *colectie);
 
 #endif

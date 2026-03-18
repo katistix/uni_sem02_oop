@@ -20,4 +20,6 @@ int main() {
   initialize_service(&service, &colectie);
 
   run(&service);
+
+  destroy_colectie(&colectie);
 }

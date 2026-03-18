@@ -57,19 +57,29 @@ void command_listare_masini(MasinaService *service) {
 }
 
 void command_sortare_dupa_model(MasinaService *service) {
-  Masina *masini = srv_get_sorted_by_model(service);
+  int descending;
+  printf("Ordine: 0 = ascendenta, 1 = descendenta: ");
+  scanf("%d", &descending);
+  clear_buffer();
+  Masina *masini = srv_get_sorted_masini(service, compare_by_model, descending);
   int count = srv_get_count(service);
   for (int i = 0; i < count; i++) {
     print_masina(masini[i]);
   }
+  free(masini);
 }
 
 void command_sortare_dupa_categorie(MasinaService *service) {
-  Masina *masini = srv_get_sorted_by_categorie(service);
+  int descending;
+  printf("Ordine: 0 = ascendenta, 1 = descendenta: ");
+  scanf("%d", &descending);
+  clear_buffer();
+  Masina *masini = srv_get_sorted_masini(service, compare_by_categorie, descending);
   int count = srv_get_count(service);
   for (int i = 0; i < count; i++) {
     print_masina(masini[i]);
   }
+  free(masini);
 }
 
 void command_actualizare_masina(MasinaService *service) {

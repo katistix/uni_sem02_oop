@@ -76,3 +76,9 @@ Masina *get_all_masini(ColectieMasini *colectie) {
 
   return colectie->masini;
 }
+
+void destroy_colectie(ColectieMasini *colectie) {
+  if (colectie == NULL)
+    return;
+  free(colectie->masini);
+}

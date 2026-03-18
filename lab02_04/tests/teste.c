@@ -216,6 +216,39 @@ void test_srv_get_sorted_by_categorie() {
   printf("test_srv_get_sorted_by_categorie passed!\n");
 }
 
+void test_srv_get_sorted_masini_generic() {
+  printf("test_srv_get_sorted_masini_generic...\n");
+  ColectieMasini colectie;
+  initialize_colectie(&colectie);
+  MasinaService service;
+  initialize_service(&service, &colectie);
+
+  srv_add_masina(&service, "TM11ABC", "Audi", "sedan");
+  srv_add_masina(&service, "TM12ABC", "Dacia", "hatchback");
+  srv_add_masina(&service, "TM13ABC", "BMW", "sedan");
+
+  Masina *sorted_model_asc = srv_get_sorted_masini(&service, compare_by_model, 0);
+  assert(strcmp(sorted_model_asc[0].model, "Audi") == 0);
+  assert(strcmp(sorted_model_asc[1].model, "BMW") == 0);
+  assert(strcmp(sorted_model_asc[2].model, "Dacia") == 0);
+
+  Masina *sorted_model_desc = srv_get_sorted_masini(&service, compare_by_model, 1);
+  assert(strcmp(sorted_model_desc[0].model, "Dacia") == 0);
+  assert(strcmp(sorted_model_desc[1].model, "BMW") == 0);
+  assert(strcmp(sorted_model_desc[2].model, "Audi") == 0);
+
+  Masina *sorted_cat_asc = srv_get_sorted_masini(&service, compare_by_categorie, 0);
+  assert(strcmp(sorted_cat_asc[0].categorie, "hatchback") == 0);
+  assert(strcmp(sorted_cat_asc[1].categorie, "sedan") == 0);
+
+  Masina *sorted_cat_desc = srv_get_sorted_masini(&service, compare_by_categorie, 1);
+  assert(strcmp(sorted_cat_desc[0].categorie, "sedan") == 0);
+  assert(strcmp(sorted_cat_desc[1].categorie, "sedan") == 0);
+  assert(strcmp(sorted_cat_desc[2].categorie, "hatchback") == 0);
+
+  printf("test_srv_get_sorted_masini_generic passed!\n");
+}
+
 int main() {
   printf("=== rulare teste... ===\n\n");
 
@@ -233,6 +266,7 @@ int main() {
 
   test_srv_get_sorted_by_model();
   test_srv_get_sorted_by_categorie();
+  test_srv_get_sorted_masini_generic();
 
   printf("\n=== teste rulate cu succes! ===\n");
 
