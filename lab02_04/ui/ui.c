@@ -4,6 +4,7 @@
 
 #include "../domain/masina.h"
 #include "../service/masina_service.h"
+#include "../utils/masina_compare.h"
 #include "ui.h"
 
 // helpers

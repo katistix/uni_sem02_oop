@@ -8,9 +8,6 @@ typedef struct {
   ColectieMasini *repo;
 } MasinaService;
 
-int compare_by_model(const void *a, const void *b);
-int compare_by_categorie(const void *a, const void *b);
-
 
 /// @brief Initializeaza serviciul de masini cu repository-ul dat (constructor)
 /// @param srv - pointer la serviciul de masini care va fi initializat
@@ -59,17 +56,4 @@ int srv_get_count(MasinaService *srv);
 /// @param descending - 0 pentru ordine ascendenta, 1 pentru ordine descendenta
 /// @return - pointer la un array de masini sortat
 Masina *srv_get_sorted_masini(MasinaService *srv, int (*compare_func)(const void*, const void*), int descending);
-
-/// @brief Returneaza un array de masini sortat dupa model (ordine ascendenta)
-/// @param srv
-/// @return - pointer la un array de masini sortat dupa model
-Masina *srv_get_sorted_by_model(MasinaService *srv);
-
-
-/// @brief Returneaza un array de masini sortat dupa categorie (ordine ascendenta)
-/// @param srv
-/// @return - pointer la un array de masini sortat dupa categorie
-Masina *srv_get_sorted_by_categorie(MasinaService *srv);
-
-
 #endif

@@ -1,28 +1,7 @@
 #include "masina_service.h"
 #include <string.h>
 #include <stdlib.h>
-
-// UTILS:
-
-/// @brief Compara doua masini dupa model pentru a fi folosita in sortare
-/// @param a 
-/// @param b 
-/// @return 1 daca modelul masinii_a > modelul masinii_b, -1 daca modelul masinii_a < modelul masinii_b, 0 daca sunt egale
-int compare_by_model(const void *a, const void *b) {
-  const Masina *masina_a = (const Masina *)a;
-  const Masina *masina_b = (const Masina *)b;
-  return strcmp(masina_a->model, masina_b->model);
-}
-
-/// @brief Compara doua masini dupa categorie pentru a fi folosita in sortare
-/// @param a 
-/// @param b 
-/// @return 1 daca masina_a > masina_b, -1 daca masina_a < masina_b, 0 daca sunt egale
-int compare_by_categorie(const void *a, const void *b) {
-  const Masina *masina_a = (const Masina *)a;
-  const Masina *masina_b = (const Masina *)b;
-  return strcmp(masina_a->categorie, masina_b->categorie);
-}
+#include "../utils/masina_compare.h"
 
 static void merge(Masina *arr, int left, int mid, int right, int (*compare_func)(const void*, const void*)) {
   int n1 = mid - left + 1;
@@ -152,14 +131,4 @@ Masina *srv_get_sorted_masini(MasinaService *srv, int (*compare_func)(const void
 
   return sorted_masini;
 }
-
-Masina *srv_get_sorted_by_model(MasinaService *srv) {
-  return srv_get_sorted_masini(srv, compare_by_model, 0);
-}
-
-Masina *srv_get_sorted_by_categorie(MasinaService *srv) {
-  return srv_get_sorted_masini(srv, compare_by_categorie, 0);
-}
-
-
 

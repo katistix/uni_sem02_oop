@@ -1,5 +1,6 @@
 #include "../repo/masini.h"
 #include "../service/masina_service.h"
+#include "../utils/masina_compare.h"
 #include <assert.h>
 #include <stdio.h>
 #include <string.h>
@@ -189,7 +190,7 @@ void test_srv_get_sorted_by_model() {
   srv_add_masina(&service, "TM12ABC", "Dacia", "sedan");
   srv_add_masina(&service, "TM13ABC", "BMW", "sedan");
 
-  Masina *sorted = srv_get_sorted_by_model(&service);
+  Masina *sorted = srv_get_sorted_masini(&service, compare_by_model, 0);
   assert(strcmp(sorted[0].model, "Audi") == 0);
   assert(strcmp(sorted[1].model, "BMW") == 0);
   assert(strcmp(sorted[2].model, "Dacia") == 0);
@@ -208,7 +209,7 @@ void test_srv_get_sorted_by_categorie() {
   srv_add_masina(&service, "TM12ABC", "Dacia", "hatchback");
   srv_add_masina(&service, "TM13ABC", "BMW", "sedan");
 
-  Masina *sorted = srv_get_sorted_by_categorie(&service);
+  Masina *sorted = srv_get_sorted_masini(&service, compare_by_categorie, 0);
   assert(strcmp(sorted[0].categorie, "hatchback") == 0);
   assert(strcmp(sorted[1].categorie, "sedan") == 0);
   assert(strcmp(sorted[2].categorie, "sedan") == 0);
@@ -249,6 +250,22 @@ void test_srv_get_sorted_masini_generic() {
   printf("test_srv_get_sorted_masini_generic passed!\n");
 }
 
+void test_repo_destroy_colectie() {
+  printf("test_repo_destroy_colectie...\n");
+
+  destroy_colectie(NULL);
+
+  ColectieMasini colectie;
+  initialize_colectie(&colectie);
+  Masina masina1 = {"AA12ABC", "model1", "categorie1", 0};
+  add(&colectie, masina1);
+  assert(colectie.count == 1);
+  assert(colectie.masini != NULL);
+  destroy_colectie(&colectie);
+
+  printf("test_repo_destroy_colectie passed!\n");
+}
+
 int main() {
   printf("=== rulare teste... ===\n\n");
 
@@ -259,6 +276,7 @@ int main() {
   test_repo_get_all_masini();
   test_repo_get_masina();
   test_repo_update_masina();
+  test_repo_destroy_colectie();
 
   test_srv_initialize_service();
   test_srv_add_and_get();
