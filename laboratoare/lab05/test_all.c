@@ -346,3 +346,9 @@ void run_all_tests(void)
 
     printf("--- TOATE TESTELE AU TRECUT CU SUCCES! ---\n\n");
 }
+
+int main(void)
+{
+    run_all_tests();
+    return 0;
+}

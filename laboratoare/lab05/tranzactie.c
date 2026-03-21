@@ -14,8 +14,8 @@ Tranzactie tranzactie_creeaza(int id, int zi, double suma,
     t.id   = id;
     t.zi   = zi;
     t.suma = suma;
-    strncpy_s(t.tip, TIP_MAX, tip, _TRUNCATE);
-    strncpy_s(t.descriere, DESC_MAX, descriere, _TRUNCATE);
+    strncpy(t.tip, tip, TIP_MAX - 1);
+    strncpy(t.descriere, descriere, DESC_MAX - 1);
     t.tip[TIP_MAX - 1]         = '\0';
     t.descriere[DESC_MAX - 1]  = '\0';
     return t;
