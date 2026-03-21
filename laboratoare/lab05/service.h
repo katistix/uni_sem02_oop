@@ -10,8 +10,8 @@
 #include "vector.h"
 
 typedef struct {
-    Repo        *repo;
-    VectorVector *history;
+    Repo   *repo;
+    Vector *history;
 } Service;
 
 /* Ciclu de viata */

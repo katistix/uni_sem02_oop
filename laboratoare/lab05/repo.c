@@ -10,7 +10,7 @@ Repo *repo_creeaza(void)
 {
     Repo *r = (Repo *)malloc(sizeof(Repo));
     if (!r) return NULL;
-    r->tranzactii  = vector_creeaza();
+    r->tranzactii  = vector_creeaza(sizeof(Tranzactie), NULL);
     r->urmatorul_id = 1;
     if (!r->tranzactii) { free(r); return NULL; }
     return r;
@@ -27,7 +27,7 @@ int repo_adauga(Repo *r, Tranzactie t)
 {
     if (!r) return 0;
     t.id = r->urmatorul_id;
-    if (!vector_adauga(r->tranzactii, t)) return 0;
+    if (!vector_adauga(r->tranzactii, &t)) return 0;
     r->urmatorul_id++;
     return 1;
 }
@@ -37,7 +37,7 @@ int repo_index_dupa_id(const Repo *r, int id)
     if (!r) return -1;
     int i;
     for (i = 0; i < vector_lungime(r->tranzactii); i++) {
-        Tranzactie *t = vector_get(r->tranzactii, i);
+        Tranzactie *t = (Tranzactie *)vector_get(r->tranzactii, i);
         if (t && t->id == id) return i;
     }
     return -1;
@@ -47,7 +47,7 @@ Tranzactie *repo_gaseste_dupa_id(const Repo *r, int id)
 {
     int idx = repo_index_dupa_id(r, id);
     if (idx < 0) return NULL;
-    return vector_get(r->tranzactii, idx);
+    return (Tranzactie *)vector_get(r->tranzactii, idx);
 }
 
 int repo_sterge_dupa_id(Repo *r, int id)
@@ -95,7 +95,7 @@ void repo_restore(Repo *r, Vector *v)
     int max_id = 0;
     int i;
     for (i = 0; i < vector_lungime(v); i++) {
-        Tranzactie *t = vector_get(v, i);
+        Tranzactie *t = (Tranzactie *)vector_get(v, i);
         if (t && t->id > max_id) max_id = t->id;
     }
     r->urmatorul_id = max_id + 1;
