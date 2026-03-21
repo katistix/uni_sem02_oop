@@ -161,6 +161,85 @@ static void test_vector(void)
 }
 
 /* ================================================================
+ * 2b. TESTE VECTOR DE VECTORI (UNDO HISTORY)
+ * ================================================================ */
+static void test_vv(void)
+{
+    printf("Rulez teste VECTOR DE VECTORI...\n");
+
+    VectorVector *vv = vv_creeaza();
+    assert(vv != NULL);
+    assert(vv_lungime(vv) == 0);
+
+    /* Creeaza vectori de tranzactii */
+    Vector *v1 = vector_creeaza();
+    vector_adauga(v1, tranzactie_creeaza(1, 5, 100.0, "intrare", "A"));
+
+    Vector *v2 = vector_creeaza();
+    vector_adauga(v2, tranzactie_creeaza(1, 5, 100.0, "intrare", "A"));
+    vector_adauga(v2, tranzactie_creeaza(2, 10, 200.0, "iesire", "B"));
+
+    Vector *v3 = vector_creeaza();
+    vector_adauga(v3, tranzactie_creeaza(1, 5, 100.0, "intrare", "A"));
+
+    /* Adaugare vectori */
+    assert(vv_adauga(vv, v1));
+    assert(vv_lungime(vv) == 1);
+    assert(vv_adauga(vv, v2));
+    assert(vv_lungime(vv) == 2);
+    assert(vv_adauga(vv, v3));
+    assert(vv_lungime(vv) == 3);
+
+    /* Pop - ultimul intrat */
+    Vector *popped = vv_pop(vv);
+    assert(popped != NULL);
+    assert(vv_lungime(vv) == 2);
+    assert(vector_lungime(popped) == 1);
+    vector_distruge(popped);
+
+    popped = vv_pop(vv);
+    assert(popped != NULL);
+    assert(vv_lungime(vv) == 1);
+    assert(vector_lungime(popped) == 2);
+    vector_distruge(popped);
+
+    popped = vv_pop(vv);
+    assert(popped != NULL);
+    assert(vv_lungime(vv) == 0);
+    vector_distruge(popped);
+
+    /* Pop din gol */
+    assert(vv_pop(vv) == NULL);
+    assert(vv_lungime(vv) == 0);
+
+    /* vv_adauga cu NULL */
+    assert(!vv_adauga(NULL, v1));
+    assert(!vv_adauga(vv, NULL));
+
+    /* vv_lungime NULL */
+    assert(vv_lungime(NULL) == 0);
+
+    /* vv_distruge NULL nu crapa */
+    vv_distruge(NULL);
+    assert(1);
+
+    /* Test realocare - adauga peste CAPACITATE_INITIALA */
+    VectorVector *vv2 = vv_creeaza();
+    int i;
+    for (i = 0; i < 20; i++) {
+        Vector *vx = vector_creeaza();
+        vector_adauga(vx, tranzactie_creeaza(i, i % 31 + 1,
+                                             (i + 1) * 10.0,
+                                             "intrare", "test"));
+        vv_adauga(vv2, vx);
+    }
+    assert(vv_lungime(vv2) == 20);
+    vv_distruge(vv2);
+
+    vv_distruge(vv);
+}
+
+/* ================================================================
  * 3. TESTE REPO
  * ================================================================ */
 static void test_repo(void)
@@ -220,6 +299,25 @@ static void test_repo(void)
     /* distruge NULL nu crapa */
     repo_distruge(NULL);
     assert(1);
+
+    /* repo_restore */
+    Repo *r2 = repo_creeaza();
+    assert(r2 != NULL);
+    repo_adauga(r2, tranzactie_creeaza(0, 1, 50.0, "intrare", "X"));
+    repo_adauga(r2, tranzactie_creeaza(0, 2, 60.0, "intrare", "Y"));
+    assert(repo_contor(r2) == 2);
+
+    Vector *backup = vector_copie(repo_get_toate(r2));
+    repo_adauga(r2, tranzactie_creeaza(0, 3, 70.0, "intrare", "Z"));
+    assert(repo_contor(r2) == 3);
+
+    repo_restore(r2, backup);
+    assert(repo_contor(r2) == 2);
+    repo_distruge(r2);
+
+    /* repo_restore cu NULL */
+    repo_restore(NULL, backup);
+    repo_restore(r, NULL);
 
     repo_distruge(r);
 }
@@ -330,6 +428,57 @@ static void test_service(void)
 
     service_distruge(s);
     repo_distruge(r);
+
+    /* ================================================================
+     * TESTE UNDO
+     * ================================================================ */
+    printf("Rulez teste UNDO...\n");
+
+    Repo    *r_u = repo_creeaza();
+    Service *s_u = service_creeaza(r_u);
+    assert(s_u != NULL);
+
+    /* Undo pe service NULL */
+    assert(service_undo(NULL) == -1);
+
+    /* Undo fara operatii in history */
+    assert(service_undo(s_u) == -2);
+    assert(service_contor(s_u) == 0);
+
+    /* Undo dupa adaugare */
+    service_adauga(s_u, 5, 100.0, "intrare", "Salariu");
+    service_adauga(s_u, 10, 200.0, "iesire", "Chirie");
+    assert(service_contor(s_u) == 2);
+    assert(service_undo(s_u) == 1);
+    assert(service_contor(s_u) == 1);
+    assert(service_undo(s_u) == 1);
+    assert(service_contor(s_u) == 0);
+
+    /* Undo dupa modificare */
+    service_adauga(s_u, 5, 100.0, "intrare", "A");
+    service_adauga(s_u, 10, 200.0, "intrare", "B");
+    assert(service_undo(s_u) == 1);
+    assert(service_contor(s_u) == 1);
+    Tranzactie *t = repo_gaseste_dupa_id(r_u, 1);
+    assert(t != NULL && t->suma == 100.0);
+
+    /* Undo dupa stergere */
+    service_adauga(s_u, 15, 300.0, "intrare", "C");
+    assert(service_contor(s_u) == 2);
+    assert(service_undo(s_u) == 1);
+    assert(service_contor(s_u) == 1);
+
+    /* Mai multe undo consecutive */
+    service_adauga(s_u, 20, 400.0, "intrare", "D");
+    service_adauga(s_u, 25, 500.0, "intrare", "E");
+    assert(service_contor(s_u) == 3);
+    assert(service_undo(s_u) == 1);
+    assert(service_contor(s_u) == 2);
+    assert(service_undo(s_u) == 1);
+    assert(service_contor(s_u) == 1);
+
+    service_distruge(s_u);
+    repo_distruge(r_u);
 }
 
 /* ================================================================
@@ -341,6 +490,7 @@ void run_all_tests(void)
 
     test_tranzactie();
     test_vector();
+    test_vv();
     test_repo();
     test_service();
 

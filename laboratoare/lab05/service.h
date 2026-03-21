@@ -10,10 +10,12 @@
 #include "vector.h"
 
 typedef struct {
-    Repo *repo;
+    Repo        *repo;
+    VectorVector *history;
 } Service;
 
 /* Ciclu de viata */
+
 Service *service_creeaza(Repo *repo);
 void     service_distruge(Service *s);
 
@@ -38,5 +40,10 @@ Vector *service_sorteaza_zi_desc(const Service *s);
 /* Acces */
 Vector *service_get_toate(const Service *s);
 int     service_contor(const Service *s);
+
+
+/* Undo */
+int service_undo(Service *s);
+
 
 #endif /* SERVICE_H */

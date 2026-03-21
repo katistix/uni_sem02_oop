@@ -88,6 +88,7 @@ void ui_meniu_principal(void)
     printf("  4. Vizualizeaza toate\n");
     printf("  5. Filtreaza tranzactii\n");
     printf("  6. Sorteaza tranzactii\n");
+    printf("  7. Undo\n");
     printf("  0. Iesire\n");
     printf("  Alegere: ");
 }
@@ -253,6 +254,17 @@ void ui_cmd_sorteaza(UI *ui)
     if (rez) { afiseaza_vector(rez, titlu); vector_distruge(rez); }
 }
 
+void ui_cmd_undo(UI *ui)
+{
+    int rez = service_undo(ui->service);
+    if (rez == 1)
+        printf("  >> Undo realizat cu succes!\n");
+    else if (rez == -2)
+        printf("  !! Nu exista operatii de undo.\n");
+    else
+        printf("  !! Eroare la undo.\n");
+}
+
 /* ============================================================
  * Bucla principala
  * ============================================================ */
@@ -274,6 +286,7 @@ void ui_ruleaza(UI *ui)
             case 4: ui_cmd_vizualizeaza_toate(ui);break;
             case 5: ui_cmd_filtreaza(ui);         break;
             case 6: ui_cmd_sorteaza(ui);          break;
+            case 7: ui_cmd_undo(ui);              break;
             case 0: activ = 0;
                     printf("  La revedere!\n");   break;
             default:printf("  !! Optiune invalida.\n");

@@ -86,3 +86,17 @@ int repo_urmatorul_id(const Repo *r)
     if (!r) return -1;
     return r->urmatorul_id;
 }
+
+void repo_restore(Repo *r, Vector *v)
+{
+    if (!r || !v) return;
+    vector_distruge(r->tranzactii);
+    r->tranzactii = v;
+    int max_id = 0;
+    int i;
+    for (i = 0; i < vector_lungime(v); i++) {
+        Tranzactie *t = vector_get(v, i);
+        if (t && t->id > max_id) max_id = t->id;
+    }
+    r->urmatorul_id = max_id + 1;
+}

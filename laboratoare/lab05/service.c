@@ -11,14 +11,16 @@ Service *service_creeaza(Repo *repo)
     Service *s = (Service *)malloc(sizeof(Service));
     if (!s) return NULL;
     s->repo = repo;
+    s->history = vv_creeaza();
+    if (!s->history) { free(s); return NULL; }
     return s;
 }
 
 void service_distruge(Service *s)
 {
     if (!s) return;
+    vv_distruge(s->history);
     free(s);
-    /* Nota: repo nu este distrus aici – ownership extern */
 }
 
 /* ---- Validare interna ---- */
@@ -33,16 +35,22 @@ int service_adauga(Service *s, int zi, double suma,
                    const char *tip, const char *descriere)
 {
     if (!s) return -1;
-    if (!valideaza(zi, suma, tip)) return -2;  /* date invalide */
+    if (!valideaza(zi, suma, tip)) return -2;
+    Vector *copie = vector_copie(repo_get_toate(s->repo));
+    if (!copie) return -4;
+    vv_adauga(s->history, copie);
     Tranzactie t = tranzactie_creeaza(0, zi, suma, tip, descriere);
     if (!repo_adauga(s->repo, t)) return -3;
-    return 1; /* succes */
+    return 1;
 }
 
 int service_sterge(Service *s, int id)
 {
     if (!s) return -1;
-    if (!repo_gaseste_dupa_id(s->repo, id)) return -2; /* nu exista */
+    if (!repo_gaseste_dupa_id(s->repo, id)) return -2;
+    Vector *copie = vector_copie(repo_get_toate(s->repo));
+    if (!copie) return -4;
+    vv_adauga(s->history, copie);
     return repo_sterge_dupa_id(s->repo, id) ? 1 : -3;
 }
 
@@ -52,6 +60,9 @@ int service_modifica(Service *s, int id, int zi, double suma,
     if (!s) return -1;
     if (!valideaza(zi, suma, tip)) return -2;
     if (!repo_gaseste_dupa_id(s->repo, id)) return -3;
+    Vector *copie = vector_copie(repo_get_toate(s->repo));
+    if (!copie) return -5;
+    vv_adauga(s->history, copie);
     return repo_modifica(s->repo, id, zi, suma, tip, descriere) ? 1 : -4;
 }
 
@@ -137,3 +148,14 @@ Vector *service_get_toate(const Service *s)
 
 int service_contor(const Service *s)
 { return repo_contor(s->repo); }
+
+
+int service_undo(Service *s)
+{
+    if (!s || !s->history) return -1;
+    if (vv_lungime(s->history) == 0) return -2;
+    Vector *stare_anterioara = vv_pop(s->history);
+    if (!stare_anterioara) return -1;
+    repo_restore(s->repo, stare_anterioara);
+    return 1;
+}

@@ -31,4 +31,21 @@ int     vector_lungime(const Vector *v);
 /* Utilitare */
 Vector *vector_copie(const Vector *v);
 
+/* ============================================================
+ * Vector de vectori (pentru history undo)
+ * ============================================================ */
+
+typedef struct {
+    Vector **elemente;
+    int      lungime;
+    int      capac;
+} VectorVector;
+
+/* Operatii vector de vectori */
+VectorVector *vv_creeaza(void);
+void          vv_distruge(VectorVector *vv);
+int           vv_adauga(VectorVector *vv, Vector *v);
+Vector       *vv_pop(VectorVector *vv);
+int           vv_lungime(const VectorVector *vv);
+
 #endif /* VECTOR_H */

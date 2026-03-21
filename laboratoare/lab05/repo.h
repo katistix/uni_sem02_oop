@@ -33,4 +33,9 @@ Vector *repo_get_toate(const Repo *r);
 int     repo_contor(const Repo *r);
 int     repo_urmatorul_id(const Repo *r);
 
+/// @brief Restaureaza starea repo-ului dintr-un vector de tranzactii 
+/// @param r 
+/// @param v 
+void    repo_restore(Repo *r, Vector *v);
+
 #endif /* REPO_H */
