@@ -42,7 +42,7 @@ static int vector_creste(Vector *v)
     return 1;
 }
 
-int vector_adauga(Vector *v, const void *elem)
+int vector_adauga(Vector *v, const void* elem)
 {
     if (!v) return 0;
     if (v->lungime == v->capac)
