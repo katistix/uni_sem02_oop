@@ -2,6 +2,7 @@
 #define SERVICE_H
 
 #include "../repo/repo.h"
+#include "../domain/produs.h"
 #include <algorithm>
 
 class ServiceProduse {
@@ -21,23 +22,8 @@ public:
     void modifica(const int id, const std::string& nume, const std::string& tip, double pret, const std::string& producator);
     std::vector<Produs> getAll() const;
 
-    template<typename Compare>
-    std::vector<Produs> sortByFunction(Compare cmp) const {
-        std::vector<Produs> produse = repo.getAll();
-        std::sort(produse.begin(), produse.end(), cmp);
-        return produse;
-    }
-
-    template<typename Predicate>
-    std::vector<Produs> filterByFunction(Predicate fn) const {
-        std::vector<Produs> produse = repo.getAll();
-        std::vector<Produs> result;
-        for (const auto& p : produse) {
-            if (fn(p))
-                result.push_back(p);
-        }
-        return result;
-    }
+    std::vector<Produs> sortByFunction(bool (*cmp)(const Produs&, const Produs&)) const;
+    std::vector<Produs> filterByFunction(bool (*fn)(const Produs&)) const;
 };
 
 #endif // SERVICE_H

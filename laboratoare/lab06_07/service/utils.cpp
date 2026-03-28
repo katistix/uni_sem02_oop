@@ -1,20 +1,12 @@
 #include "utils.h"
 
-bool cmpByNume(const Produs& a, const Produs& b) {
-    return a.getNume() < b.getNume();
-}
+bool cmpByNume(const Produs& a, const Produs& b) { return a.getNume() < b.getNume(); }
 
-bool cmpByNumeDesc(const Produs& a, const Produs& b) {
-    return a.getNume() > b.getNume();
-}
+bool cmpByNumeDesc(const Produs& a, const Produs& b) { return a.getNume() > b.getNume(); }
 
-bool cmpByPret(const Produs& a, const Produs& b) {
-    return a.getPret() < b.getPret();
-}
+bool cmpByPret(const Produs& a, const Produs& b) { return a.getPret() < b.getPret(); }
 
-bool cmpByPretDesc(const Produs& a, const Produs& b) {
-    return a.getPret() > b.getPret();
-}
+bool cmpByPretDesc(const Produs& a, const Produs& b) { return a.getPret() > b.getPret(); }
 
 bool cmpByNumeSiTip(const Produs& a, const Produs& b) {
     if (a.getNume() != b.getNume())
@@ -22,20 +14,15 @@ bool cmpByNumeSiTip(const Produs& a, const Produs& b) {
     return a.getTip() < b.getTip();
 }
 
-std::function<bool(const Produs&)> makeFilterByPretMax(double pretMax) {
-    return [pretMax](const Produs& p) {
-        return p.getPret() <= pretMax;
-    };
-}
+static double g_pretMax;
+static std::string g_producator;
+static std::string g_tip;
 
-std::function<bool(const Produs&)> makeFilterByProducator(const std::string& producator) {
-    return [producator](const Produs& p) {
-        return p.getProducator() == producator;
-    };
-}
+void setFilterPretMax(double pretMax) { g_pretMax = pretMax; }
+bool filterByPretMax(const Produs& p) { return p.getPret() <= g_pretMax; }
 
-std::function<bool(const Produs&)> makeFilterByTip(const std::string& tip) {
-    return [tip](const Produs& p) {
-        return p.getTip() == tip;
-    };
-}
+void setFilterProducator(const std::string& producator) { g_producator = producator; }
+bool filterByProducator(const Produs& p) { return p.getProducator() == g_producator; }
+
+void setFilterTip(const std::string& tip) { g_tip = tip; }
+bool filterByTip(const Produs& p) { return p.getTip() == g_tip; }

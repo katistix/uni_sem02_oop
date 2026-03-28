@@ -7,8 +7,8 @@ test:
 coverage:
 	g++ --coverage tests/teste.cpp domain/produs.cpp repo/repo.cpp service/service.cpp service/utils.cpp -o test_coverage -Wall -Wextra -Werror
 	./test_coverage
-	lcov --capture --directory . --output-file lcov_raw.info --ignore-errors inconsistent,unsupported
-	lcov --remove lcov_raw.info '*/tests/*' '*/c++/*' '/usr/*' -o lcov.info --ignore-errors inconsistent,unsupported,unused
+	lcov --capture --directory . --output-file lcov_raw.info --ignore-errors inconsistent,unsupported,format
+	lcov --remove lcov_raw.info '*/tests/*' '*/c++/*' '/usr/*' -o lcov.info --ignore-errors inconsistent,unsupported,unused,format
 	genhtml lcov.info --output-directory coverage_html --ignore-errors inconsistent,corrupt
 	lcov --list lcov.info
 

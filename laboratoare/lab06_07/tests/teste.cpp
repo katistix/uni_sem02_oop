@@ -171,8 +171,8 @@ void test_filter_byPretMax() {
     service.adauga("B", "T", 200.0, "X");
     service.adauga("C", "T", 300.0, "X");
 
-    auto fn = makeFilterByPretMax(200.0);
-    auto rezultat = service.filterByFunction(fn);
+    setFilterPretMax(200.0);
+    auto rezultat = service.filterByFunction(filterByPretMax);
     assert(rezultat.size() == 2);
     assert(rezultat[0].getNume() == "A");
     assert(rezultat[1].getNume() == "B");
@@ -185,8 +185,8 @@ void test_filter_byProducator() {
     service.adauga("B", "T", 200.0, "Samsung");
     service.adauga("C", "T", 300.0, "Dell");
 
-    auto fn = makeFilterByProducator("Dell");
-    auto rezultat = service.filterByFunction(fn);
+    setFilterProducator("Dell");
+    auto rezultat = service.filterByFunction(filterByProducator);
     assert(rezultat.size() == 2);
     assert(rezultat[0].getProducator() == "Dell");
     assert(rezultat[1].getProducator() == "Dell");
@@ -199,8 +199,8 @@ void test_filter_byTip() {
     service.adauga("B", "Food", 200.0, "Y");
     service.adauga("C", "Electronics", 300.0, "Z");
 
-    auto fn = makeFilterByTip("Electronics");
-    auto rezultat = service.filterByFunction(fn);
+    setFilterTip("Electronics");
+    auto rezultat = service.filterByFunction(filterByTip);
     assert(rezultat.size() == 2);
     assert(rezultat[0].getTip() == "Electronics");
     assert(rezultat[1].getTip() == "Electronics");
@@ -211,8 +211,8 @@ void test_filter_empty_result() {
     ServiceProduse service(repo);
     service.adauga("A", "T", 500.0, "X");
 
-    auto fn = makeFilterByPretMax(100.0);
-    auto rezultat = service.filterByFunction(fn);
+    setFilterPretMax(100.0);
+    auto rezultat = service.filterByFunction(filterByPretMax);
     assert(rezultat.empty());
 }
 

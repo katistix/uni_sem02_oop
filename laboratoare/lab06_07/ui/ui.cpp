@@ -62,20 +62,20 @@ static void uiFiltreaza(ServiceProduse& service) {
         double pretMax;
         std::cout << "Pret maxim: ";
         std::cin >> pretMax;
-        auto fn = makeFilterByPretMax(pretMax);
-        rezultat = service.filterByFunction(fn);
+        setFilterPretMax(pretMax);
+        rezultat = service.filterByFunction(filterByPretMax);
     } else if (opt == 2) {
         std::string producator;
         std::cout << "Producator: ";
         std::cin >> producator;
-        auto fn = makeFilterByProducator(producator);
-        rezultat = service.filterByFunction(fn);
+        setFilterProducator(producator);
+        rezultat = service.filterByFunction(filterByProducator);
     } else if (opt == 3) {
         std::string tip;
         std::cout << "Tip: ";
         std::cin >> tip;
-        auto fn = makeFilterByTip(tip);
-        rezultat = service.filterByFunction(fn);
+        setFilterTip(tip);
+        rezultat = service.filterByFunction(filterByTip);
     } else {
         std::cout << "Optiune invalida!\n";
         return;
