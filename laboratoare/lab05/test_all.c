@@ -210,6 +210,7 @@ static void test_vv(void)
     last = (Vector **)vector_get(vv, vector_lungime(vv) - 1);
     assert(last && *last && vector_lungime(*last) == 2);
     vv->lungime--;
+    vector_distruge(v2);
     assert(vector_lungime(vv) == 1);
 
     p3 = (Vector **)malloc(sizeof(Vector *));
@@ -331,24 +332,31 @@ static void test_service(void)
     assert(service_contor(s) == 3);
     assert(service_sterge(s, 99) == -2);
 
-    Vector *iesiri  = service_filtreaza_tip(s, "iesire");
-    Vector *intrari = service_filtreaza_tip(s, "intrare");
+    Vector *iesiri  = service_filtreaza(s, pred_tip, "iesire");
+    Vector *intrari = service_filtreaza(s, pred_tip, "intrare");
     assert(vector_lungime(iesiri) == 3);
     assert(vector_lungime(intrari) == 0);
     vector_distruge(iesiri);
     vector_distruge(intrari);
 
+    {
+        Vector *gol = service_filtreaza(NULL, pred_tip, "iesire");
+        assert(gol != NULL && vector_lungime(gol) == 0);
+        vector_distruge(gol);
+    }
+
     service_adauga(s, 1,  50.0, "intrare", "Test");
     service_adauga(s, 2, 150.0, "intrare", "Test2");
 
-    Vector *mari = service_filtreaza_suma_mai_mare(s, 100.0);
-    Vector *mici = service_filtreaza_suma_mai_mica(s, 100.0);
+    double prag = 100.0;
+    Vector *mari = service_filtreaza(s, pred_suma_mai_mare, &prag);
+    Vector *mici = service_filtreaza(s, pred_suma_mai_mica, &prag);
     assert(vector_lungime(mari) >= 2);
     assert(vector_lungime(mici) >= 1);
     vector_distruge(mari);
     vector_distruge(mici);
 
-    Vector *sa = service_sorteaza_suma_asc(s);
+    Vector *sa = service_sorteaza(s, cmp_suma_asc);
     assert(sa != NULL);
     int n = vector_lungime(sa), ok_asc = 1;
     int i;
@@ -360,7 +368,7 @@ static void test_service(void)
     assert(ok_asc);
     vector_distruge(sa);
 
-    Vector *sd = service_sorteaza_suma_desc(s);
+    Vector *sd = service_sorteaza(s, cmp_suma_desc);
     int ok_desc = 1;
     n = vector_lungime(sd);
     for (i = 0; i < n - 1; i++) {
@@ -379,7 +387,7 @@ static void test_service(void)
     service_adauga(s_sort, 1, 50.0, "intrare", "A");
     service_adauga(s_sort, 3, 200.0, "intrare", "C");
 
-    Vector *sa_sort = service_sorteaza_suma_asc(s_sort);
+    Vector *sa_sort = service_sorteaza(s_sort, cmp_suma_asc);
     assert(sa_sort != NULL);
     assert(vector_lungime(sa_sort) == 5);
     assert(((Tranzactie *)vector_get(sa_sort, 0))->suma == 50.0);
@@ -387,7 +395,7 @@ static void test_service(void)
     service_distruge(s_sort);
     repo_distruge(r_sort);
 
-    Vector *za = service_sorteaza_zi_asc(s);
+    Vector *za = service_sorteaza(s, cmp_zi_asc);
     int ok_zi_asc = 1;
     n = vector_lungime(za);
     for (i = 0; i < n - 1; i++) {
@@ -398,7 +406,7 @@ static void test_service(void)
     assert(ok_zi_asc);
     vector_distruge(za);
 
-    Vector *zd = service_sorteaza_zi_desc(s);
+    Vector *zd = service_sorteaza(s, cmp_zi_desc);
     int ok_zi_desc = 1;
     n = vector_lungime(zd);
     for (i = 0; i < n - 1; i++) {

@@ -89,8 +89,24 @@ int service_modifica(Service *s, int id, int zi, double suma,
     return repo_modifica(s->repo, id, zi, suma, tip, descriere) ? 1 : -4;
 }
 
-/* ---- Filtrare ---- */
-Vector *service_filtreaza_tip(const Service *s, const char *tip)
+/* ---- Predicate filtrare ---- */
+int pred_tip(const Tranzactie *t, const void *ctx)
+{
+    return strcmp(t->tip, (const char *)ctx) == 0;
+}
+
+int pred_suma_mai_mare(const Tranzactie *t, const void *ctx)
+{
+    return t->suma > *(const double *)ctx;
+}
+
+int pred_suma_mai_mica(const Tranzactie *t, const void *ctx)
+{
+    return t->suma < *(const double *)ctx;
+}
+
+/* ---- Filtrare generica ---- */
+Vector *service_filtreaza(const Service *s, PredicatFn predicat, const void *ctx)
 {
     Vector *rez = vector_creeaza(sizeof(Tranzactie), NULL);
     if (!s || !rez) return rez;
@@ -98,40 +114,31 @@ Vector *service_filtreaza_tip(const Service *s, const char *tip)
     int i, n = vector_lungime(toate);
     for (i = 0; i < n; i++) {
         Tranzactie *t = (Tranzactie *)vector_get(toate, i);
-        if (strcmp(t->tip, tip) == 0)
+        if (predicat(t, ctx))
             vector_adauga(rez, t);
     }
     return rez;
 }
 
-Vector *service_filtreaza_suma_mai_mare(const Service *s, double prag)
+/* ---- Comparatori sortare ---- */
+int cmp_suma_asc(const void *a, const void *b)
 {
-    Vector *rez = vector_creeaza(sizeof(Tranzactie), NULL);
-    if (!s || !rez) return rez;
-    Vector *toate = repo_get_toate(s->repo);
-    int i, n = vector_lungime(toate);
-    for (i = 0; i < n; i++) {
-        Tranzactie *t = (Tranzactie *)vector_get(toate, i);
-        if (t->suma > prag) vector_adauga(rez, t);
-    }
-    return rez;
+    double da = ((const Tranzactie *)a)->suma;
+    double db = ((const Tranzactie *)b)->suma;
+    return (da > db) - (da < db);
 }
 
-Vector *service_filtreaza_suma_mai_mica(const Service *s, double prag)
+int cmp_suma_desc(const void *a, const void *b) { return cmp_suma_asc(b, a); }
+
+int cmp_zi_asc(const void *a, const void *b)
 {
-    Vector *rez = vector_creeaza(sizeof(Tranzactie), NULL);
-    if (!s || !rez) return rez;
-    Vector *toate = repo_get_toate(s->repo);
-    int i, n = vector_lungime(toate);
-    for (i = 0; i < n; i++) {
-        Tranzactie *t = (Tranzactie *)vector_get(toate, i);
-        if (t->suma < prag) vector_adauga(rez, t);
-    }
-    return rez;
+    return ((const Tranzactie *)a)->zi - ((const Tranzactie *)b)->zi;
 }
 
-/* ---- Sortare (insertion sort) ---- */
-static Vector *sorteaza_suma_asc(const Service *s)
+int cmp_zi_desc(const void *a, const void *b) { return cmp_zi_asc(b, a); }
+
+/* ---- Sortare generica (insertion sort cu comparator injectat) ---- */
+Vector *service_sorteaza(const Service *s, ComparatorFn comparator)
 {
     Vector *src = repo_get_toate(s->repo);
     Vector *rez = vector_creeaza(src->elem_size, NULL);
@@ -142,7 +149,7 @@ static Vector *sorteaza_suma_asc(const Service *s)
         j = i - 1;
         while (j >= 0) {
             Tranzactie *prev = (Tranzactie *)vector_get(rez, j);
-            if (!prev || prev->suma <= cheie.suma) break;
+            if (!prev || comparator(prev, &cheie) <= 0) break;
             Tranzactie tmp = *prev;
             vector_seteaza(rez, j + 1, &tmp);
             j--;
@@ -151,74 +158,6 @@ static Vector *sorteaza_suma_asc(const Service *s)
     }
     return rez;
 }
-
-static Vector *sorteaza_suma_desc(const Service *s)
-{
-    Vector *src = repo_get_toate(s->repo);
-    Vector *rez = vector_creeaza(src->elem_size, NULL);
-    if (!rez) return NULL;
-    int i, j, n = vector_lungime(src);
-    for (i = 0; i < n; i++) {
-        Tranzactie cheie = *(Tranzactie *)vector_get(src, i);
-        j = i - 1;
-        while (j >= 0) {
-            Tranzactie *prev = (Tranzactie *)vector_get(rez, j);
-            if (!prev || prev->suma >= cheie.suma) break;
-            Tranzactie tmp = *prev;
-            vector_seteaza(rez, j + 1, &tmp);
-            j--;
-        }
-        vector_seteaza(rez, j + 1, &cheie);
-    }
-    return rez;
-}
-
-static Vector *sorteaza_zi_asc(const Service *s)
-{
-    Vector *src = repo_get_toate(s->repo);
-    Vector *rez = vector_creeaza(src->elem_size, NULL);
-    if (!rez) return NULL;
-    int i, j, n = vector_lungime(src);
-    for (i = 0; i < n; i++) {
-        Tranzactie cheie = *(Tranzactie *)vector_get(src, i);
-        j = i - 1;
-        while (j >= 0) {
-            Tranzactie *prev = (Tranzactie *)vector_get(rez, j);
-            if (!prev || prev->zi <= cheie.zi) break;
-            Tranzactie tmp = *prev;
-            vector_seteaza(rez, j + 1, &tmp);
-            j--;
-        }
-        vector_seteaza(rez, j + 1, &cheie);
-    }
-    return rez;
-}
-
-static Vector *sorteaza_zi_desc(const Service *s)
-{
-    Vector *src = repo_get_toate(s->repo);
-    Vector *rez = vector_creeaza(src->elem_size, NULL);
-    if (!rez) return NULL;
-    int i, j, n = vector_lungime(src);
-    for (i = 0; i < n; i++) {
-        Tranzactie cheie = *(Tranzactie *)vector_get(src, i);
-        j = i - 1;
-        while (j >= 0) {
-            Tranzactie *prev = (Tranzactie *)vector_get(rez, j);
-            if (!prev || prev->zi >= cheie.zi) break;
-            Tranzactie tmp = *prev;
-            vector_seteaza(rez, j + 1, &tmp);
-            j--;
-        }
-        vector_seteaza(rez, j + 1, &cheie);
-    }
-    return rez;
-}
-
-Vector *service_sorteaza_suma_asc(const Service *s)  { return sorteaza_suma_asc(s); }
-Vector *service_sorteaza_suma_desc(const Service *s) { return sorteaza_suma_desc(s); }
-Vector *service_sorteaza_zi_asc(const Service *s)    { return sorteaza_zi_asc(s); }
-Vector *service_sorteaza_zi_desc(const Service *s)   { return sorteaza_zi_desc(s); }
 
 Vector *service_get_toate(const Service *s)
 { return repo_get_toate(s->repo); }

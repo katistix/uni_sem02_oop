@@ -17,4 +17,3 @@ void ServiceProduse::modifica(const int id, const std::string& nume, const std::
 std::vector<Produs> ServiceProduse::getAll() const {
     return repo.getAll();
 }
-

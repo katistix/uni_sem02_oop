@@ -213,15 +213,15 @@ void ui_cmd_filtreaza(UI *ui)
     if (opt == 1) {
         char tip[TIP_MAX];
         while (!citeste_tip(tip));
-        rez = service_filtreaza_tip(ui->service, tip);
+        rez = service_filtreaza(ui->service, pred_tip, tip);
         snprintf(titlu, sizeof(titlu), "Tranzactii de tip: %s", tip);
     } else if (opt == 2) {
         double prag = ui_citeste_double("  Prag suma", 0.0);
-        rez = service_filtreaza_suma_mai_mare(ui->service, prag);
+        rez = service_filtreaza(ui->service, pred_suma_mai_mare, &prag);
         snprintf(titlu, sizeof(titlu), "Suma > %.2f", prag);
     } else if (opt == 3) {
         double prag = ui_citeste_double("  Prag suma", 0.0);
-        rez = service_filtreaza_suma_mai_mica(ui->service, prag);
+        rez = service_filtreaza(ui->service, pred_suma_mai_mica, &prag);
         snprintf(titlu, sizeof(titlu), "Suma < %.2f", prag);
     } else {
         printf("  !! Optiune invalida.\n"); return;
@@ -241,13 +241,13 @@ void ui_cmd_sorteaza(UI *ui)
     const char *titlu = "";
 
     switch (opt) {
-        case 1: rez = service_sorteaza_suma_asc(ui->service);
+        case 1: rez = service_sorteaza(ui->service, cmp_suma_asc);
                 titlu = "Sortate dupa suma crescator"; break;
-        case 2: rez = service_sorteaza_suma_desc(ui->service);
+        case 2: rez = service_sorteaza(ui->service, cmp_suma_desc);
                 titlu = "Sortate dupa suma descrescator"; break;
-        case 3: rez = service_sorteaza_zi_asc(ui->service);
+        case 3: rez = service_sorteaza(ui->service, cmp_zi_asc);
                 titlu = "Sortate dupa zi crescator"; break;
-        case 4: rez = service_sorteaza_zi_desc(ui->service);
+        case 4: rez = service_sorteaza(ui->service, cmp_zi_desc);
                 titlu = "Sortate dupa zi descrescator"; break;
         default: printf("  !! Optiune invalida.\n"); return;
     }

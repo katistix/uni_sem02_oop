@@ -10,6 +10,7 @@ lcov_raw.info
 lcov.info
 coverage_html/
 test_coverage
+*.dSYM
 
 
 test

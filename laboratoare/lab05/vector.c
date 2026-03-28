@@ -101,6 +101,7 @@ void *vector_copie(const Vector *v, void *(*copy_func)(const void *))
         void *copied = copy_func(elem);
         if (!copied) { vector_distruge(c); return NULL; }
         memcpy((char *)c->date + c->lungime * c->elem_size, copied, c->elem_size);
+        free(copied);
         c->lungime++;
     }
     return c;

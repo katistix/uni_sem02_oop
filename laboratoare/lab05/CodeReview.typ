@@ -48,6 +48,7 @@
     - Aplicatia foloseste `strncpy_s`, care functioneaza doar pe windows, deci nu este portabila. Timp necesar pentru inlocuire: 30 minute.
     - Testele sunt rulate la inceputul functiei `main`, ceea ce inseamna ca daca un test esueaza, aplicatia nu va rula. Timp necesar pentru mutarea testelor intr-un fisier separat: 15 minute.
     - Build system-ul foloseste CMakeLists.txt, am inlocuit cu un Makefile mult mai simplu de inteles si portabil. Timp necesar pentru inlocuire: 20 minute.
+    - Functiile de sortare si filtrare nu sunt generice, si exista cod duplicat pentru fiecare varianta de sortare sau filtrare. Timp necesar pentru refactorizare: 30 minute.
 
   ]
 )

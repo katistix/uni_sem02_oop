@@ -1,4 +1,5 @@
 #include "ui.h"
+#include "../service/utils.h"
 #include <iostream>
 
 void printMenu() {
@@ -6,10 +7,81 @@ void printMenu() {
     std::cout << "2. Sterge produs\n";
     std::cout << "3. Modifica produs\n";
     std::cout << "4. Afiseaza produse\n";
+    std::cout << "5. Sorteaza produse\n";
+    std::cout << "6. Filtreaza produse\n";
     std::cout << "0. Iesire\n";
     std::cout << "Alege optiunea: ";
 }
 
+static void afiseazaProduse(const std::vector<Produs>& produse) {
+    if (produse.empty()) {
+        std::cout << "Nu exista produse!\n";
+        return;
+    }
+    for (const auto& p : produse) {
+        std::cout << p.toString() << "\n";
+    }
+}
+
+static void uiSorteaza(ServiceProduse& service) {
+    std::cout << "1. Dupa nume (crescator)\n";
+    std::cout << "2. Dupa nume (descrescator)\n";
+    std::cout << "3. Dupa pret (crescator)\n";
+    std::cout << "4. Dupa pret (descrescator)\n";
+    std::cout << "5. Dupa nume si tip\n";
+    std::cout << "Alege criteriul: ";
+    int opt;
+    std::cin >> opt;
+    std::vector<Produs> rezultat;
+    if (opt == 1)
+        rezultat = service.sortByFunction(cmpByNume);
+    else if (opt == 2)
+        rezultat = service.sortByFunction(cmpByNumeDesc);
+    else if (opt == 3)
+        rezultat = service.sortByFunction(cmpByPret);
+    else if (opt == 4)
+        rezultat = service.sortByFunction(cmpByPretDesc);
+    else if (opt == 5)
+        rezultat = service.sortByFunction(cmpByNumeSiTip);
+    else {
+        std::cout << "Optiune invalida!\n";
+        return;
+    }
+    afiseazaProduse(rezultat);
+}
+
+static void uiFiltreaza(ServiceProduse& service) {
+    std::cout << "1. Dupa pret maxim\n";
+    std::cout << "2. Dupa producator\n";
+    std::cout << "3. Dupa tip\n";
+    std::cout << "Alege criteriul: ";
+    int opt;
+    std::cin >> opt;
+    std::vector<Produs> rezultat;
+    if (opt == 1) {
+        double pretMax;
+        std::cout << "Pret maxim: ";
+        std::cin >> pretMax;
+        auto fn = makeFilterByPretMax(pretMax);
+        rezultat = service.filterByFunction(fn);
+    } else if (opt == 2) {
+        std::string producator;
+        std::cout << "Producator: ";
+        std::cin >> producator;
+        auto fn = makeFilterByProducator(producator);
+        rezultat = service.filterByFunction(fn);
+    } else if (opt == 3) {
+        std::string tip;
+        std::cout << "Tip: ";
+        std::cin >> tip;
+        auto fn = makeFilterByTip(tip);
+        rezultat = service.filterByFunction(fn);
+    } else {
+        std::cout << "Optiune invalida!\n";
+        return;
+    }
+    afiseazaProduse(rezultat);
+}
 
 void UI::run() {
     while (true) {
@@ -55,16 +127,11 @@ void UI::run() {
                 std::cin >> producator;
                 service.modifica(id, nume, tip, pret, producator);
             } else if (opt == 4) {
-                auto produse = service.getAll();
-                if (produse.empty()) {
-                    std::cout << "Nu exista produse!\n";
-                }
-                for (const auto& p : produse) {
-                    std::cout << p.toString() << "\n";
-                    // std::cout << p.getId() << ": " << p.getNume() << ", " 
-                    //           << p.getTip() << ", " << p.getPret() 
-                    //           << ", " << p.getProducator() << "\n";
-                }
+                afiseazaProduse(service.getAll());
+            } else if (opt == 5) {
+                uiSorteaza(service);
+            } else if (opt == 6) {
+                uiFiltreaza(service);
             } else {
                 std::cout << "Optiune invalida!\n";
             }
