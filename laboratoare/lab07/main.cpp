@@ -1,7 +1,20 @@
 #include <iostream>
 
+#include "repo/RepoProduse.h"
+#include "service/ServiceProduse.h"
+#include "ui/UI.h"
+
+using namespace std;
+
 int main()
 {
-    std::cout << "Hello, World!" << std::endl;
+    // initializare
+    RepoProduse repo;
+    ProdusValidator validator;
+    ServiceProduse srv(repo, validator);
+    UI ui(srv);
+
+    ui.run();
+
     return 0;
 }

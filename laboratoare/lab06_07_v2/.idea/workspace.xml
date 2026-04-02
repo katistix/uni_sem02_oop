@@ -28,32 +28,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c9a2cfd9-61a4-418c-aa53-efe4e124aa82" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../lab06_07/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../lab06_07/.idea/editor.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../lab06_07/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../lab06_07/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/editor.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/lab06_07_v2.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/domain/produs.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/domain/produs.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/repo/repo.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/repo/repo.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/service/service.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/service/service.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/service/utils.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/service/utils.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/teste.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ui/ui.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ui/ui.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../.vscode/c_cpp_properties.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../.vscode/settings.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lab06_07/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/../lab06_07/Makefile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lab06_07/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../lab06_07/main.cpp" afterDir="false" />
-    </list>
+    <list default="true" id="c9a2cfd9-61a4-418c-aa53-efe4e124aa82" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -102,6 +77,7 @@
     "RunOnceActivity.readMode.enableVisualFormatting": "true",
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
     "RunOnceActivity.west.config.association.type.startup.service": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "cf.first.check.clang-format": "false",
     "cidr.known.project.marker": "true",
     "git-widget-placeholder": "main",
@@ -139,8 +115,25 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1775060023724</updated>
-      <workItem from="1775060025734" duration="3114000" />
+      <workItem from="1775060025734" duration="3333000" />
     </task>
+    <task id="LOCAL-00001" summary="lab06 v2">
+      <option name="closed" value="true" />
+      <created>1775113349913</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1775113349913</updated>
+    </task>
+    <task id="LOCAL-00002" summary="lab06 v2">
+      <option name="closed" value="true" />
+      <created>1775113354949</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1775113354949</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -150,6 +143,10 @@
     <isAutomaticCheckingOnLaunch value="false" />
     <isAutomaticFoundErrors value="true" />
     <isAutomaticReloadCMake value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="lab06 v2" />
+    <option name="LAST_COMMIT_MESSAGE" value="lab06 v2" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="../../../../data/school/uni_sem02_oop/laboratoare/lab06_07_v2/cmake-build-debug-coverage" NAME="tests Coverage Results" MODIFIED="1775060773349" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="gcov/llvm" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
