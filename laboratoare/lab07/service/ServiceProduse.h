@@ -20,7 +20,7 @@ public:
 
     void add(int id, const char *nume, const char *tip, double pret, const char *producator) const;
     void sterge(int id) const;
-    void update(int id, char* name, char* tip, double pret, char* producator) const;
+    void update(int id, const char* name, const char* tip, double pret, const char* producator) const;
     [[nodiscard]] CustomVector<Produs>& getAllProduse() const;
 
     CustomVector<Produs> getSorted(const std::function<bool(const Produs&, const Produs&)>& cmp) const;

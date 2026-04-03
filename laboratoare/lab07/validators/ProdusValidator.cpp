@@ -21,15 +21,15 @@ void ProdusValidator::validate(const Produs &p)
 {
     std::vector<string> errorMessages;
     if (p.getId() <= 0)
-        errorMessages.push_back("ID-ul trebuie sa fie un numar pozitiv.");
+        errorMessages.emplace_back("ID-ul trebuie sa fie un numar pozitiv.");
     if (strlen(p.getNume()) == 0)
-        errorMessages.push_back("Numele trebuie sa contina cel putin un caracter.");
+        errorMessages.emplace_back("Numele trebuie sa contina cel putin un caracter.");
     if (strlen(p.getTip())==0)
-        errorMessages.push_back("Tipul trebuie sa contina cel putin un caracter.");
+        errorMessages.emplace_back("Tipul trebuie sa contina cel putin un caracter.");
     if (p.getPret() < 0)
-        errorMessages.push_back("Pretul trebuie sa fie pozitiv.");
+        errorMessages.emplace_back("Pretul trebuie sa fie pozitiv.");
     if (strlen(p.getProducator()) == 0)
-        errorMessages.push_back("Denumirea producatorului trebuie sa contina cel putin un caracter.");
+        errorMessages.emplace_back("Denumirea producatorului trebuie sa contina cel putin un caracter.");
 
     if (!errorMessages.empty())
         throw ValidationException(errorMessages);

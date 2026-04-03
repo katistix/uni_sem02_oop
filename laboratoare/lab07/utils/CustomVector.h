@@ -55,7 +55,7 @@ public:
         --this->size;
     }
 
-    int get_size() const
+    [[nodiscard]] int get_size() const
     {
         return this->size;
     }

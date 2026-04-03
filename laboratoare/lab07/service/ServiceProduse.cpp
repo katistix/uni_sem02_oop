@@ -18,7 +18,7 @@ void ServiceProduse::sterge(const int id) const
     this->repo.sterge(id);
 }
 
-void ServiceProduse::update(const int id, char* name, char* tip, const double pret, char* producator) const
+void ServiceProduse::update(const int id, const char* name, const char* tip, const double pret, const char* producator) const
 {
     const Produs p(id, name, tip, pret, producator);
 

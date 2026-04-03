@@ -81,7 +81,7 @@ void UI::cmd_adauga() const
 
 void UI::cmd_show_all() const
 {
-    CustomVector<Produs> &produse = this->srv.getAllProduse();
+    const CustomVector<Produs> &produse = this->srv.getAllProduse();
 
     for (int i=0;i<produse.get_size();i++)
     {

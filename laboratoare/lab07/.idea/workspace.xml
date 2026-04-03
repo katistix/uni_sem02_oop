@@ -29,31 +29,15 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1c16cb7d-268b-49a6-882a-b9bd3bf65b72" name="Changes" comment="working add, remove and get all">
-      <change afterPath="$PROJECT_DIR$/utils/ProdusComparators.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.cache/clangd/index/CustomVector.h.CCE6C4749CF6D02E.idx" beforeDir="false" afterPath="$PROJECT_DIR$/.cache/clangd/index/CustomVector.h.CCE6C4749CF6D02E.idx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.cache/clangd/index/Produs.cpp.0DE9C4368174B27B.idx" beforeDir="false" afterPath="$PROJECT_DIR$/.cache/clangd/index/Produs.cpp.0DE9C4368174B27B.idx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.cache/clangd/index/Produs.h.370336B7CD14EF9E.idx" beforeDir="false" afterPath="$PROJECT_DIR$/.cache/clangd/index/Produs.h.370336B7CD14EF9E.idx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.cache/clangd/index/ProdusValidator.h.E88B638F91954F51.idx" beforeDir="false" afterPath="$PROJECT_DIR$/.cache/clangd/index/ProdusValidator.h.E88B638F91954F51.idx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.cache/clangd/index/RepoProduse.h.0353F5765023ECFD.idx" beforeDir="false" afterPath="$PROJECT_DIR$/.cache/clangd/index/RepoProduse.h.0353F5765023ECFD.idx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.cache/clangd/index/ServiceProduse.h.F8266EF9EBC608EA.idx" beforeDir="false" afterPath="$PROJECT_DIR$/.cache/clangd/index/ServiceProduse.h.F8266EF9EBC608EA.idx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.cache/clangd/index/UI.h.CE5C1EABADF12144.idx" beforeDir="false" afterPath="$PROJECT_DIR$/.cache/clangd/index/UI.h.CE5C1EABADF12144.idx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.cache/clangd/index/main.cpp.B4A18A09E8CE9AEC.idx" beforeDir="false" afterPath="$PROJECT_DIR$/.cache/clangd/index/main.cpp.B4A18A09E8CE9AEC.idx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.cache/clangd/index/tests.cpp.74049D9D3E7E9D43.idx" beforeDir="false" afterPath="$PROJECT_DIR$/.cache/clangd/index/tests.cpp.74049D9D3E7E9D43.idx" afterDir="false" />
+    <list default="true" id="1c16cb7d-268b-49a6-882a-b9bd3bf65b72" name="Changes" comment="working sort + filter">
+      <change beforePath="$PROJECT_DIR$/.idea/editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/editor.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/domain/Produs.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/domain/Produs.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/domain/Produs.h" beforeDir="false" afterPath="$PROJECT_DIR$/domain/Produs.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/repo/RepoProduse.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/repo/RepoProduse.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/repo/RepoProduse.h" beforeDir="false" afterPath="$PROJECT_DIR$/repo/RepoProduse.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/service/ServiceProduse.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/service/ServiceProduse.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/service/ServiceProduse.h" beforeDir="false" afterPath="$PROJECT_DIR$/service/ServiceProduse.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tests.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/tests.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ui/UI.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/ui/UI.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/UI.h" beforeDir="false" afterPath="$PROJECT_DIR$/ui/UI.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/utils/CustomVector.h" beforeDir="false" afterPath="$PROJECT_DIR$/utils/CustomVector.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/validators/ProdusValidator.h" beforeDir="false" afterPath="$PROJECT_DIR$/validators/ProdusValidator.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/validators/ProdusValidator.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/validators/ProdusValidator.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -68,6 +52,9 @@
   </component>
   <component name="ClangdSettings">
     <option name="formatViaClangd" value="false" />
+  </component>
+  <component name="CoverageOptionsProvider">
+    <option name="myAddOrReplace" value="0" />
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug-Coverage" />
   <component name="Git.Settings">
@@ -122,7 +109,7 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager" selected="CMake Application.lab07">
+  <component name="RunManager" selected="CMake Application.tests">
     <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -158,7 +145,7 @@
       <workItem from="1775202603528" duration="65000" />
       <workItem from="1775202703151" duration="509000" />
       <workItem from="1775203872020" duration="66000" />
-      <workItem from="1775204259943" duration="7104000" />
+      <workItem from="1775204259943" duration="9385000" />
     </task>
     <task id="LOCAL-00001" summary="working add, remove and get all">
       <option name="closed" value="true" />
@@ -176,7 +163,15 @@
       <option name="project" value="LOCAL" />
       <updated>1775160275639</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="working sort + filter">
+      <option name="closed" value="true" />
+      <created>1775216204199</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1775216204199</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -190,7 +185,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="working add, remove and get all" />
-    <option name="LAST_COMMIT_MESSAGE" value="working add, remove and get all" />
+    <MESSAGE value="working sort + filter" />
+    <option name="LAST_COMMIT_MESSAGE" value="working sort + filter" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
@@ -198,6 +194,6 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="../../../../data/school/uni_sem02_oop/laboratoare/lab07/cmake-build-debug-coverage" NAME="tests Coverage Results" MODIFIED="1775128962354" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="gcov/llvm" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
-    <SUITE FILE_PATH="../../../../data/school/uni_sem02_oop/laboratoare/lab07/cmake-build-debug-coverage" NAME="tests Coverage Results" MODIFIED="1775206844916" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="gcov/llvm" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="../../../../data/school/uni_sem02_oop/laboratoare/lab07/cmake-build-debug-coverage" NAME="tests Coverage Results" MODIFIED="1775217628760" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="gcov/llvm" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
 </project>
