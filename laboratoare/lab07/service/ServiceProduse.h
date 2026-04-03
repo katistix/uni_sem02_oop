@@ -18,9 +18,14 @@ private:
 public:
     ServiceProduse(RepoProduse &_repo, ProdusValidator &_val) : repo{_repo}, validator(_val){};
 
-    void add(int id, char *nume, char *tip, double pret, char *producator);
+    void add(int id, const char *nume, const char *tip, double pret, const char *producator) const;
     void sterge(int id) const;
-    CustomVector<Produs>& getAllProduse() const;
+    void update(int id, char* name, char* tip, double pret, char* producator) const;
+    [[nodiscard]] CustomVector<Produs>& getAllProduse() const;
+
+    CustomVector<Produs> getSorted(const std::function<bool(const Produs&, const Produs&)>& cmp) const;
+    CustomVector<Produs> getFiltered(const std::function<bool(const Produs&)>& predicate) const;
+
 };
 
 

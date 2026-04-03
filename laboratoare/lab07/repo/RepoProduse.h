@@ -16,8 +16,9 @@ private:
 public:
     RepoProduse() = default;
 
-    void add(Produs &p);
-    void sterge(const int id);
+    void add(const Produs &p);
+    void sterge(int id);
+    void update(const Produs &p) const;
     CustomVector<Produs>& getAll();
 };
 

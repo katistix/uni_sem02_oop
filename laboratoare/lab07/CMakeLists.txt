@@ -15,7 +15,8 @@ add_executable(lab07 main.cpp
         ui/UI.h
         exceptions/RepositoryException.h
         validators/ProdusValidator.cpp
-        validators/ProdusValidator.h)
+        validators/ProdusValidator.h
+        utils/ProdusComparators.h)
 
 add_executable(tests tests.cpp
         utils/CustomVector.h
@@ -26,4 +27,5 @@ add_executable(tests tests.cpp
         service/ServiceProduse.cpp
         service/ServiceProduse.h
         validators/ProdusValidator.cpp
-        validators/ProdusValidator.h)
+        validators/ProdusValidator.h
+        utils/ProdusComparators.h)

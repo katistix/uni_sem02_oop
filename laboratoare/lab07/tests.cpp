@@ -17,11 +17,11 @@ void test_custom_vector_constructor()
 // DOMAIN
 void test_produs_constructor()
 {
-    char *name = "nume1";
-    char *tip = "tip1";
-    double pret = 3.14;
-    char *producator = "producator1";
-    Produs produs(1, name, tip, pret, producator);
+    const auto name = "nume1";
+    const auto tip = "tip1";
+    constexpr double pret = 3.14;
+    const auto *producator = "producator1";
+    const Produs produs(1, name, tip, pret, producator);
 
     assert(produs.getId() == 1);
     assert(produs.getNume() == name);

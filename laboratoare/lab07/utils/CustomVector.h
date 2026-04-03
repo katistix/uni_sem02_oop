@@ -7,7 +7,6 @@
 
 
 #define SCALE_FACTOR 2
-#include <iosfwd>
 
 template <typename  T> class CustomVector
 {
@@ -47,13 +46,13 @@ public:
         size++;
     }
 
-    void remove_index(int index)
+    void remove_index(const int index)
     {
         for (int i = index; i < this->size - 1; i++)
         {
             this->data[i] = this->data[i + 1];
         }
-        this->size--;
+        --this->size;
     }
 
     int get_size() const
@@ -61,9 +60,9 @@ public:
         return this->size;
     }
 
-    T* get_by_index(int index) const
+    T& get_by_index(int index) const
     {
-        return &this->data[index];
+        return this->data[index];
     }
 
 };

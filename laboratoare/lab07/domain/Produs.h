@@ -18,7 +18,7 @@ private:
 public:
     Produs() : id(0), nume(nullptr), tip(nullptr), pret(0), producator(nullptr) {}
 
-    Produs(int id, char *nume, char *tip, double pret, char *producator);
+    Produs(int id, const char *nume, const char *tip, double pret, const char *producator);
 
     Produs(const Produs& other);
     Produs& operator=(const Produs& other);

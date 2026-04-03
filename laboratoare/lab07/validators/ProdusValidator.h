@@ -5,6 +5,7 @@
 #ifndef LAB07_PRODUSVALIDATOR_H
 #define LAB07_PRODUSVALIDATOR_H
 #include <string>
+#include <utility>
 #include <vector>
 #include "../domain/Produs.h"
 
@@ -15,15 +16,15 @@ class ValidationException
 private:
     std::string errorMessage;
 public:
-    ValidationException(string errorMsg):errorMessage(errorMsg){};
+    ValidationException(string errorMsg):errorMessage(std::move(errorMsg)){};
     ValidationException(vector<string> errorMsgs);
-    const string& getMessage() const;
+    [[nodiscard]] const string& getMessage() const;
 };
 
 class ProdusValidator
 {
 public:
-    void validate(const Produs &p);
+    static void validate(const Produs &p);
 };
 
 

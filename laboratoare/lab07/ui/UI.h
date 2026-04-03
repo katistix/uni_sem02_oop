@@ -16,16 +16,21 @@ private:
     static void printMenu();
 
     // commands
-    void cmd_adauga();
-    void cmd_show_all();
-    void cmd_sterge();
+    void cmd_adauga() const;
+    void cmd_show_all() const;
+    void cmd_sterge() const;
+    void cmd_update() const;
+
+    void cmd_sort() const;
+    void cmd_filter() const;
+    void cmd_load_dummy() const;
 
 
 
 public:
     explicit UI(ServiceProduse &srv) : srv(srv){}
 
-    void run();
+    void run() const;
 };
 
 

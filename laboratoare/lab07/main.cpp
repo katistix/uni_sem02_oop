@@ -12,7 +12,7 @@ int main()
     RepoProduse repo;
     ProdusValidator validator;
     ServiceProduse srv(repo, validator);
-    UI ui(srv);
+    const UI ui(srv);
 
     ui.run();
 

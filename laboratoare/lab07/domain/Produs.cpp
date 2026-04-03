@@ -3,10 +3,10 @@
 //
 
 #include "Produs.h"
-#include <cstring>
+#include <iostream>
 
 
-Produs::Produs(const int id, char *nume, char *tip, const double pret, char *producator)
+Produs::Produs(const int id, const char *nume, const char *tip, const double pret, const char *producator)
     : id(id), pret(pret)
 {
     this->nume = new char[strlen(nume) + 1];
@@ -19,6 +19,7 @@ Produs::Produs(const int id, char *nume, char *tip, const double pret, char *pro
 
 Produs::Produs(const Produs& other) : id(other.id), pret(other.pret)
 {
+    std::cout << "create constructor called" << std::endl;
     this->nume = new char[strlen(other.nume) + 1];
     strcpy(this->nume, other.nume);
     this->tip = new char[strlen(other.tip) + 1];
@@ -29,6 +30,7 @@ Produs::Produs(const Produs& other) : id(other.id), pret(other.pret)
 
 Produs& Produs::operator=(const Produs& other)
 {
+    std::cout << "copy constructor called" << std::endl;
     if (this == &other) return *this;
     delete[] this->nume;
     delete[] this->tip;
