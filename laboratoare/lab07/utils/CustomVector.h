@@ -38,6 +38,35 @@ public:
         this->data = new T[this->capacity];
     }
 
+    // copy constructor
+    CustomVector(const CustomVector& other)
+    {
+        this->size = other.size;
+        this->capacity = other.capacity;
+        this->data = new T[this->capacity];
+        for (int i = 0; i < this->size; i++)
+            this->data[i] = other.data[i];
+    }
+
+    CustomVector& operator=(const CustomVector& other)
+    {
+        if (this == &other) return *this;
+        delete[] this->data;
+        this->size = other.size;
+        this->capacity = other.capacity;
+        this->data = new T[this->capacity];
+        for (int i = 0; i < this->size; i++)
+        {
+            this->data[i] = other.data[i];
+        }
+        return *this;
+    }
+
+    ~CustomVector()
+    {
+        delete[] this->data;
+    }
+
     void add(T new_element)
     {
         if (this->size == this->capacity) resize();

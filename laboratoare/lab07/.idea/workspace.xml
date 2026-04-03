@@ -29,15 +29,9 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1c16cb7d-268b-49a6-882a-b9bd3bf65b72" name="Changes" comment="working sort + filter">
-      <change beforePath="$PROJECT_DIR$/.idea/editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/editor.xml" afterDir="false" />
+    <list default="true" id="1c16cb7d-268b-49a6-882a-b9bd3bf65b72" name="Changes" comment="fix issues">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/ServiceProduse.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/service/ServiceProduse.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/ServiceProduse.h" beforeDir="false" afterPath="$PROJECT_DIR$/service/ServiceProduse.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/tests.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/UI.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/ui/UI.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/utils/CustomVector.h" beforeDir="false" afterPath="$PROJECT_DIR$/utils/CustomVector.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/validators/ProdusValidator.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/validators/ProdusValidator.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,7 +50,7 @@
   <component name="CoverageOptionsProvider">
     <option name="myAddOrReplace" value="0" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug-Coverage" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
   </component>
@@ -86,7 +80,7 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "CMake Application.lab07.executor": "Run",
-    "CMake Application.tests.executor": "Coverage",
+    "CMake Application.tests.executor": "Valgrind",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.RadMigrateCodeStyle": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
@@ -104,12 +98,12 @@
     "nodejs_package_manager_path": "npm",
     "org.rust.first.attach.projects": "true",
     "run.code.analysis.last.selected.profile": "pProject Default",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "settings.editor.selected.configurable": "dynamic.analysis.tools.valgrind",
     "ts.external.directory.path": "/Applications/CLion.app/Contents/plugins/javascript-plugin/jsLanguageServicesImpl/external",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager" selected="CMake Application.tests">
+  <component name="RunManager" selected="CMake Application.lab07">
     <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -145,7 +139,7 @@
       <workItem from="1775202603528" duration="65000" />
       <workItem from="1775202703151" duration="509000" />
       <workItem from="1775203872020" duration="66000" />
-      <workItem from="1775204259943" duration="9385000" />
+      <workItem from="1775204259943" duration="10243000" />
     </task>
     <task id="LOCAL-00001" summary="working add, remove and get all">
       <option name="closed" value="true" />
@@ -171,7 +165,15 @@
       <option name="project" value="LOCAL" />
       <updated>1775216204199</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="fix issues">
+      <option name="closed" value="true" />
+      <created>1775218404629</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1775218404629</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -186,7 +188,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="working add, remove and get all" />
     <MESSAGE value="working sort + filter" />
-    <option name="LAST_COMMIT_MESSAGE" value="working sort + filter" />
+    <MESSAGE value="fix issues" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix issues" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
